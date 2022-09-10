@@ -1,0 +1,9 @@
+*.pyc
+*Pipfile.lock
+*.png
+*.jpg
+*.jpeg
+*dump.rdb
+*.db
+db.sqlite3
+.vscode/
