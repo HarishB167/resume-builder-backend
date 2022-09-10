@@ -16,12 +16,15 @@ class PersonViewSet(ModelViewSet):
 
 @api_view()
 def person_profile(request, id):
-    queryset = Person.objects \
-        .prefetch_related('projects', 'educations', 'experiences',
-            'trainings','skills', 'languages') \
-        .get(pk=id)
-    serializer = PersonProfileSerializer(queryset)
-    return Response(serializer.data)
+    try:
+        queryset = Person.objects \
+            .prefetch_related('projects', 'educations', 'experiences',
+                'trainings','skills', 'languages') \
+            .get(pk=id)
+        serializer = PersonProfileSerializer(queryset)
+        return Response(serializer.data)
+    except Person.DoesNotExist:
+	    return Response(f"Person with id {id} doesn't exist", status=status.HTTP_404_NOT_FOUND)
 
 
 class ProjectViewSet(ModelViewSet):
