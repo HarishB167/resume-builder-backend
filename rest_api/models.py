@@ -21,14 +21,14 @@ class Project(models.Model):
     description = models.TextField()
     git_link = models.TextField()
     test_link = models.TextField()
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="projects")
 
 
 class Education(models.Model):
     qualification = models.CharField(max_length=255)
     institute = models.CharField(max_length=255)
     score = models.CharField(max_length=255)
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="educations")
 
 
 class Experience(models.Model):
@@ -37,20 +37,20 @@ class Experience(models.Model):
     start = models.DateField()
     end = models.DateField()
     responsibilities = models.TextField()
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="experiences")
     
 
 class Training(models.Model):
     title = models.CharField(max_length=255)
     subtitle = models.CharField(max_length=255)
     description = models.TextField()
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="trainings")
 
 
 class Skill(models.Model):
     name = models.CharField(max_length=255)
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="skills")
 
 class Language(models.Model):
     name = models.CharField(max_length=255)
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="languages")
