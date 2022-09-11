@@ -16,7 +16,7 @@ people_router.register('languages', views.LanguageViewSet, basename='person-lang
 
 urlpatterns = router.urls + people_router.urls
 
-urlpatterns += [path('profile/<id>', views.person_profile)]
+urlpatterns += [path('profile/<id>/', views.person_profile)]
 
 
 
