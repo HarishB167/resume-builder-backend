@@ -10,22 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pnwm+i#4t1bnbjs@ts02udssohda##7$=@koh*y+)u1^2)u8#n'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Application definition
@@ -46,6 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -77,15 +67,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'resume_builder_backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -112,7 +94,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.environ.setdefault('TIME_ZONE', 'Asia/Kolkata')
 
 USE_I18N = True
 
@@ -125,6 +107,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -141,3 +125,34 @@ CORS_ALLOWED_ORIGINS = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ]
+
+
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'handlers' : {  # What will happen to log messages
+    'console': {
+      'class': 'logging.StreamHandler',
+      
+    },
+    'file' : {
+      'class': 'logging.FileHandler',
+      'filename': 'general.log',
+      'formatter': 'verbose'
+    }
+  },
+  'loggers': { # define logger for individual app or submodule
+    '': { # captures from all apps
+      'handlers': ['console', 'file'], # reference handlers
+      'level': os.environ.get('DJANGO_LOG_LEVEL', 'INFO')
+    }
+  },
+  'formatters': {
+    'verbose': {
+      'format': '{asctime} ({levelname}) - {name} - {message}',
+      'style': '{'
+    }
+  }
+}
+
+

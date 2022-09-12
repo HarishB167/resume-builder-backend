@@ -9,6 +9,9 @@ django-debug-toolbar = "*"
 djangorestframework = "==3.11"
 drf-nested-routers = "*"
 django-cors-headers = "*"
+whitenoise = "*"
+gunicorn = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
