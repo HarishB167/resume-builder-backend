@@ -12,5 +12,9 @@ class Command(BaseCommand):
         file_path = os.path.join(current_dir, 'seed.sql')
         sql = Path(file_path).read_text()
 
+        set_mod = os.environ.get('DJANGO_SETTINGS_MODULE')
         with connection.cursor() as cursor:
-            cursor.executescript(sql)
+            if set_mod is None:
+                cursor.executescript(sql)
+            else:
+                cursor.execute(sql)
